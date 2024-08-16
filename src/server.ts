@@ -1,8 +1,6 @@
-import express, {Express} from 'express'
+import express from 'express';
 import itemRoutes from "./routes/item-routes";
-import {connectToMongoDB} from "./configs/mongodb";
 import dotenv from 'dotenv'
-import path from "path";
 import {Server} from "http";
 import mysql,{Connection} from 'mysql2/promise';
 dotenv.config()
