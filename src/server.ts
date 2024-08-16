@@ -30,8 +30,8 @@ async function connectToDatabase(): Promise<Connection> {
         const connection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'root',
-            database: 'test'
+            password: 'Amayuru@1999',
+            database: 'interns'
         });
         console.log('✅ Connected to database');
         return connection;
