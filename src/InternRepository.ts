@@ -42,4 +42,18 @@ export class InternRepository{
         return (result as any).affectedRows;
     }
 
+    //Delete an intern record
+    async delete(id: number): Promise<number> {
+        const query = 'DELETE FROM interns WHERE id = ?';
+        const [result] = await this.connection.execute(query, [id]);
+        return (result as any).affectedRows;
+    }
+
+    //Delete all intern records
+    async deleteAll(): Promise<number> {
+        const query = 'DELETE FROM interns';
+        const [result] = await this.connection.execute(query);
+        return (result as any).affectedRows;
+    }
+
 }
