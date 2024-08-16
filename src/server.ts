@@ -28,9 +28,9 @@ app.use('/api/v1/items', itemRoutes)
 async function connectToDatabase(): Promise<Connection> {
     try{
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'Amayuru@1999',
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
             database: 'interns'
         });
         console.log('✅ Connected to database');
