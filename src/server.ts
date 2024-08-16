@@ -1,32 +1,30 @@
 import express from 'express';
 import itemRoutes from "./routes/item-routes";
-import dotenv from 'dotenv'
-import {Server} from "http";
-import mysql,{Connection} from 'mysql2/promise';
-dotenv.config()
+import dotenv from 'dotenv';
+import { Server } from "http";
+import mysql, { Connection } from 'mysql2/promise';
 
-const PORT = 5000
-const app = express()
-let server: Server
+dotenv.config();
+
+const PORT = 5000;
+const app = express();
+let server: Server;
 let mysqlConnection: Connection | null = null;
 
-// json serialize
-app.use(express.json())
+// JSON middleware
+app.use(express.json());
 
-// Serve static files from the "public" directory
-// app.use(express.static(path.join(__dirname, 'public')));
+// Routes
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Hello Metaroon 2024!' });
+});
 
 
-// routes
-app.get('/', (req, res)=> {
-    res.status(200).json({message: 'Hello Metaroon 2024!'})
-    // res.sendFile(path.join(__dirname, 'public/index.html'));
-})
-app.use('/api/v1/items', itemRoutes)
+app.use('/api/v1/items', itemRoutes);
 
-// Start the express app
+// Connect to MySQL database
 async function connectToDatabase(): Promise<Connection> {
-    try{
+    try {
         const connection = await mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
@@ -34,13 +32,16 @@ async function connectToDatabase(): Promise<Connection> {
             database: 'interns'
         });
         console.log('✅ Connected to database');
+        
+
         return connection;
-    }catch(err){
+    } catch (err) {
         console.error('❌ Error connecting to database: ', err);
         throw err;
     }
-    
 }
+
+// Start the server
 (async () => {
     try {
         // Connect to MySQL
@@ -54,5 +55,5 @@ async function connectToDatabase(): Promise<Connection> {
         console.log('🔴 Failed to start application due to database connection error', ex);
     }
 })();
-export {app,server,mysqlConnection}
 
+export { app, server, mysqlConnection };

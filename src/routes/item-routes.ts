@@ -1,9 +1,22 @@
-import express from "express";
-import {ItemController} from "../controllers/item-controller";
 
-const router = express.Router()
+import express from 'express';
+import { InternRepository } from '../InternRepository';
+import { IIntern } from '../IIntern';
+import { mysqlConnection } from '../server'; 
 
-router.post('/add-item', ItemController.createItem);
-router.get('/', ItemController.getAllItems);
+const router = express.Router();
+const internRepository = new InternRepository(mysqlConnection!); 
 
-export default router
+
+router.post('/add', async (req, res) => {
+    try {
+        const intern: IIntern = req.body;
+        await internRepository.save(intern);
+        res.status(201).json({ message: 'Intern added successfully' });
+    } catch (error) {
+        console.error('Error adding intern:', error);
+        res.status(500).json({ message: 'Error adding intern' });
+    }
+});
+
+export default router;

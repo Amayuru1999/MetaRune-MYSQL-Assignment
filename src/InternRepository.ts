@@ -4,15 +4,19 @@ import { Connection} from 'mysql2/promise';
 export class InternRepository{
     private connection: Connection;
     constructor(connection: Connection){
+        if (!connection) {
+            throw new Error('Database connection is not established');
+        }
         this.connection = connection;
     }
 
     //save a new intern record
-    async save(intern:IIntern): Promise<void>{
-        const query=`INSERT INTO interns(name,email,school,start_date,end_date) VALUES(?,?,?,?,?)`;
-        const values=[intern.name,intern.email,intern.school,intern.startDate,intern.endDate,intern.startDate,intern.endDate];
-        await this.connection.query(query,values);
+    async save(intern: IIntern): Promise<void> {
+        const query = `INSERT INTO interns(name, email, school, start_date, end_date) VALUES (?, ?, ?, ?, ?)`;
+        const values = [intern.name, intern.email, intern.school, intern.startDate, intern.endDate];
+        await this.connection.query(query, values);
     }
+    
 
     //Retrieve interns
     async retrieveAll(searchParams?:{id?:number}):Promise<IIntern[]>{
